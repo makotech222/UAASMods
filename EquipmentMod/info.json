@@ -1,0 +1,11 @@
+{
+  "Id": "EquipmentMod",
+  "DisplayName": "Equipment Mod",
+  "Author": "makotech222",
+  "Version": "1.0.0",
+  "ManagerVersion": "0.21.4",
+  "GameVersion": "1.0.0",
+  "Requirements": [],
+  "AssemblyName": "EquipmentMod.dll",
+  "EntryMethod": "EquipmentMod.Main.Load"
+}

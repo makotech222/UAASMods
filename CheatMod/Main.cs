@@ -102,7 +102,7 @@ namespace UAAS
         {
             private static void Prefix(AdmiraltyManager __instance)
             {
-                if (_settings.InfRifleStock)
+                if (_settings.InfRifleStock || _settings.InfRifleStockArmory)
                 {
                     EPickerContent epickerContent = __instance.SelectedItem.ContentType;
                     if (epickerContent != EPickerContent.Cannon)
@@ -110,14 +110,28 @@ namespace UAAS
                         if (epickerContent == EPickerContent.Rifle)
                         {
                             StoreRecord storeRecord = (__instance.SelectedItem.ContentItem as RifleItem).StoreRecord;
-                            storeRecord.Shop = 999999;
+                            if (_settings.InfRifleStock)
+                            {
+                                storeRecord.Shop = 999999;
+                            }
+                            if (_settings.InfRifleStockArmory)
+                            {
+                                storeRecord.Armory = 999999;
+                            }
                         }
                     }
                     else
                     {
                         CannonModule cannon = (__instance.SelectedItem.ContentItem as CannonItem).Cannon;
                         StoreModule storeCannon = PlayerController.instance.GetStoreCannon(cannon, true);
-                        storeCannon.Shop = 999999;
+                        if (_settings.InfRifleStock)
+                        {
+                            storeCannon.Shop = 999999;
+                        }
+                        if (_settings.InfRifleStockArmory)
+                        {
+                            storeCannon.Armory = 999999;
+                        }
                     }
                 }
             }
@@ -227,7 +241,6 @@ namespace UAAS
         [HarmonyPatch("Update")]
         private class MoraleUpdate
         {
-
             private static void Postfix(Morale __instance, ref UnitModel ___data)
             {
                 if (_settings.MaxMorale && ___data.side == RuntimeVars.playerSide)
@@ -276,6 +289,8 @@ namespace UAAS
 
         [Draw("Inf. Rifle/Cannon Stock in Shop (Buy Once to update)"), Space(5)]
         public bool InfRifleStock = false;
+        [Draw("Inf. Rifle/Cannon Stock in Armory (Buy Once to update)"), Space(5)]
+        public bool InfRifleStockArmory = false;
 
         [Header("Land Battle Cheats (Player Only)")]
         [Draw("Take No Damage"), Space(5)]
