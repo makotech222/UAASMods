@@ -96,6 +96,33 @@ namespace UAAS
             }
         }
 
+        [HarmonyPatch(typeof(AdmiraltyManager))]
+        [HarmonyPatch("PerformPurchaseItem")]
+        private class PerformPurchaseItem
+        {
+            private static void Prefix(AdmiraltyManager __instance)
+            {
+                if (_settings.InfRifleStock)
+                {
+                    EPickerContent epickerContent = __instance.SelectedItem.ContentType;
+                    if (epickerContent != EPickerContent.Cannon)
+                    {
+                        if (epickerContent == EPickerContent.Rifle)
+                        {
+                            StoreRecord storeRecord = (__instance.SelectedItem.ContentItem as RifleItem).StoreRecord;
+                            storeRecord.Shop = 999999;
+                        }
+                    }
+                    else
+                    {
+                        CannonModule cannon = (__instance.SelectedItem.ContentItem as CannonItem).Cannon;
+                        StoreModule storeCannon = PlayerController.instance.GetStoreCannon(cannon, true);
+                        storeCannon.Shop = 999999;
+                    }
+                }
+            }
+        }
+
         #endregion General
 
         #region Naval
@@ -246,6 +273,9 @@ namespace UAAS
 
         [Draw("Minimum Cash (Updates when changed)", Precision = 0, Min = 0), Space(5)]
         public int MinimumCash = 0;
+
+        [Draw("Inf. Rifle/Cannon Stock in Shop (Buy Once to update)"), Space(5)]
+        public bool InfRifleStock = false;
 
         [Header("Land Battle Cheats (Player Only)")]
         [Draw("Take No Damage"), Space(5)]
