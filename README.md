@@ -20,6 +20,7 @@ CheatMod:
 - Speed Button Multiplier (Changes speed multiplier value by this multiplier, making game go faster)
 - Minimum Reputation
 - Minimum Gold
+- Inf Rifle/Cannon shop stock (Buy once to update)
 - Take No Damage (Land)
 - Max Condition (Land and Sea)
 - Max Morale (Land and Sea)
