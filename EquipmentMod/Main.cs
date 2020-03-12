@@ -140,7 +140,8 @@ namespace EquipmentMod
                             break;
                         }
                     }
-                    currentWeapon.UpdateWeapon(ref __instance.weapon);
+                    if (currentWeapon != null)
+                        currentWeapon.UpdateWeapon(ref __instance.weapon);
                 }
 
             }
