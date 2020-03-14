@@ -268,7 +268,8 @@ namespace EquipmentMod
                             break;
                         }
                     }
-                    currentWeapon.UpdateWeapon(ref cannonModule);
+                    if (currentWeapon != null)
+                        currentWeapon.UpdateWeapon(ref cannonModule);
                 }
 
             }
