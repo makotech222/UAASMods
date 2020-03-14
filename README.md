@@ -30,6 +30,11 @@ CheatMod:
 Equipment Mod:
 - Edit stats of all rifles
 - Edit stats of all ship cannons
+- Limitations: File is only loaded with guns that are currently in your store in your campaign. More guns will unlock as you progress.
+
+Changelog:
+v1.2:
+- Fix crash when new guns are added to your game
 
 Instructions:
 Install the Equipment mod using UnityModManager, start the game and load up a save. Loading a game will cause the mod to export the Rifles.txt and Cannons.txt files to the Mod's install folder inside the game directory. Exit the game, and open the two text files. You can edit the stats
