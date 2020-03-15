@@ -194,6 +194,7 @@ namespace EquipmentMod
                 this.Ballistics.gravity = template.Ballistics.gravity;
                 this.Ballistics.distance = template.Ballistics.distance;
                 this.Ballistics.baseY = template.Ballistics.baseY;
+                this.Ballistics.armorPiercing = template.Ballistics.armorPiercing;
             }
 
             public void UpdateWeapon(ref CannonModule template)
@@ -216,6 +217,7 @@ namespace EquipmentMod
                 template.Ballistics.gravity = this.Ballistics.gravity;
                 template.Ballistics.distance = this.Ballistics.distance;
                 template.Ballistics.baseY = this.Ballistics.baseY;
+                template.Ballistics.armorPiercing = this.Ballistics.armorPiercing;
             }
 
             public class BallisticsHotPatch
@@ -227,6 +229,7 @@ namespace EquipmentMod
                 public float gravity { get; set; }
                 public float distance { get; set; }
                 public float baseY { get; set; }
+                public AnimationCurve armorPiercing { get; set; }
             }
 
         }
