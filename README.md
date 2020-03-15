@@ -26,6 +26,12 @@ CheatMod:
 - Max Condition (Land and Sea)
 - Max Morale (Land and Sea)
 - Max Supply (Land)
+- Modify Naval Unit stats (Experimental)
+- Modify Land Unit stats (Experimental)
+
+Changelog:
+v1.1:
+- Add experimental cheats for editing stats.
 
 Equipment Mod:
 - Edit stats of all rifles
