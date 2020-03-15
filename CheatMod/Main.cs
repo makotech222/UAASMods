@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Reflection;
 using Fight.Modifier;
 using GOAP;
@@ -211,6 +212,46 @@ namespace UAAS
             }
         }
 
+        [HarmonyPatch(typeof(NavalController))]
+        [HarmonyPatch("CreateShipModel")]
+        private class CreateShipModel
+        {
+
+            private static void Postfix(NavalController __instance, ShipModel __result)
+            {
+                if (__result.side == RuntimeVars.playerSide)
+                {
+                    for (int i = 0; i < 6; i++)
+                    {
+                        var officer = __result.crew.GetCrewOfficer((ENavalTask)i);
+                        if (officer == null)
+                            return;
+                        officer.attributes.perception *= _settings.OfficerFirepowerModifier;
+                        officer.attributes.intelligence *= _settings.OfficerEfficiencyModifier;
+                        officer.attributes.strength *= _settings.OfficerMeleeModifier;
+                        officer.attributes.dexterity *= _settings.OfficerSailingModifier;
+                    }
+                }
+            }
+        }
+
+        [HarmonyPatch(typeof(ShipViewController))]
+        [HarmonyPatch("UpdateKinematicForces")]
+        private class UpdateKinematicForces
+        {
+
+            private static void Prefix(ShipViewController __instance, ref ShipModel ___model, ref ShipViewConfig ___viewConfig)
+            {
+                if (___model.side == RuntimeVars.playerSide)
+                {
+                    ___viewConfig.forwardForceModifier = _settings.NavalSpeedModifier;
+                    ___viewConfig.backwardForceModifier = _settings.NavalSpeedModifier;
+
+
+                }
+            }
+        }
+
         #endregion Naval
 
         #region Land
@@ -272,6 +313,56 @@ namespace UAAS
             }
         }
 
+        [HarmonyPatch(typeof(UnitManager))]
+        [HarmonyPatch("CreateUnit")]
+        private class UnitManager_StatModifier
+        {
+
+            private static void Postfix(UnitManager __instance, ref UnitModel __result)
+            {
+                if (__result.side == RuntimeVars.playerSide)
+                {
+                    __result.maxSpeed *= _settings.SpeedModifier;
+                    __result.entity.spottingRange *= _settings.SpottingModifier;
+                    __result.entity.stealthRange *= _settings.StealthModifier;
+
+                    Attributes[] attributes = new Attributes[3] { __result.startAttributes, __result.actualAttributes, __result.currentAttributes };
+                    for (int i = 0; i < attributes.Length; i++)
+                    {
+                        var attribute = attributes[i];
+                        attribute.perception *= _settings.FirepowerModifier;
+                        attribute.intelligence *= _settings.EfficiencyModifier;
+                        attribute.strength *= _settings.MeleeModifier;
+                    }
+                    __result.startAttributes = attributes[0];
+                    __result.actualAttributes = attributes[1];
+                    __result.currentAttributes = attributes[2];
+
+                    if (__result.isValid)
+                    {
+                        BattlePanel.Instance.UpdateContent(true);
+                    }
+                }
+            }
+        }
+
+        //[HarmonyPatch(typeof(UnitModel))]
+        //[HarmonyPatch("GetOfficerAttributes", MethodType.StaticConstructor)]
+        //private class GetOfficerAttributes_StatModifier
+        //{
+
+        //    private static void Postfix(UnitModel __instance, ref Attributes __result)
+        //    {
+        //        if (__instance.side == RuntimeVars.playerSide)
+        //        {
+        //            __result.perception *= _settings.FirepowerModifier;
+        //            __result.intelligence *= _settings.EfficiencyModifier;
+        //            __result.strength *= _settings.MeleeModifier;
+        //            __result.dexterity *= _settings.SailingModifier;
+        //        }
+        //    }
+        //}
+
         #endregion Land
     }
 
@@ -295,22 +386,44 @@ namespace UAAS
         [Header("Land Battle Cheats (Player Only)")]
         [Draw("Take No Damage"), Space(5)]
         public bool NoDamage = false;
-
         [Draw("Max Morale"), Space(5)]
         public bool MaxMorale = false;
-
         [Draw("Max Condition"), Space(5)]
         public bool MaxCondition = false;
-
         [Draw("Max Supply"), Space(5)]
         public bool MaxSupply = false;
+
 
         [Header("Naval Battle Cheats (Player Only)")]
         [Draw("Max Morale"), Space(5)]
         public bool MaxNavalMorale = false;
-
         [Draw("Max Condition"), Space(5)]
         public bool MaxNavalCondition = false;
+        [Draw("Naval Sailing Speed Modifier", Precision = 1, Min = 1), Space(5)]
+        public float NavalSpeedModifier = 1f;
+
+        [Header("Experimental")]
+        [Draw("Naval Officer Firepower Modifier", Precision = 1, Min = 0), Space(5)]
+        public float OfficerFirepowerModifier = 1f;
+        [Draw("Naval Officer Efficiency Modifier", Precision = 1, Min = 0), Space(5)]
+        public float OfficerEfficiencyModifier = 1f;
+        [Draw("Naval Officer Boarding Modifier", Precision = 1, Min = 0), Space(5)]
+        public float OfficerMeleeModifier = 1f;
+        [Draw("Naval Officer Sailing Modifier", Precision = 1, Min = 0), Space(5)]
+        public float OfficerSailingModifier = 1f;
+
+        [Draw("Land Spotting Modifier", Precision = 1, Min = 1), Space(5)]
+        public float SpottingModifier = 1f;
+        [Draw("Land Stealth Modifier", Precision = 1, Min = 1), Space(5)]
+        public float StealthModifier = 1f;
+        [Draw("Land Movement Speed Modifier", Precision = 1, Min = 1), Space(5)]
+        public float SpeedModifier = 1f;
+        [Draw("Land Firepower Modifier", Precision = 1, Min = 0), Space(5)]
+        public float FirepowerModifier = 1f;
+        [Draw("Land Efficiency Modifier", Precision = 1, Min = 0), Space(5)]
+        public float EfficiencyModifier = 1f;
+        [Draw("Land Melee Modifier", Precision = 1, Min = 0), Space(5)]
+        public float MeleeModifier = 1f;
 
         public override void Save(UnityModManager.ModEntry modEntry)
         {
