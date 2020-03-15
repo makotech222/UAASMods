@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
-using Fight.Modifier;
-using GOAP;
 using Harmony12;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using Save;
 using UltimateAdmiral;
-using UltimateAdmiral.UI;
 using UnityEngine;
 using UnityModManagerNet;
 using static UnityModManagerNet.UnityModManager;
@@ -63,6 +61,8 @@ namespace EquipmentMod
             public string textDescription { get; set; }
             public string textName { get; set; }
             public string textShootType { get; set; }
+            public AnimationCurve damageDegradation { get; set; }
+            public BallisticProperties ballistics { get; set; }
             public WeaponHotpatch() { }
             public WeaponHotpatch(WeaponTemplate template)
             {
@@ -84,6 +84,8 @@ namespace EquipmentMod
                 this.textDescription = template.textDescription.ToString();
                 this.textName = template.textName.ToString();
                 this.textShootType = template.textShootType.ToString();
+                this.damageDegradation = template.damageDegradation;
+                this.ballistics = template.ballistics;
             }
 
             public void UpdateWeapon(ref WeaponTemplate template)
@@ -102,6 +104,8 @@ namespace EquipmentMod
                 template.price = this.price;
                 template.randHi = this.randHi;
                 template.randLow = this.randLow;
+                template.damageDegradation = this.damageDegradation;
+                template.ballistics = this.ballistics;
             }
         }
 
@@ -270,6 +274,161 @@ namespace EquipmentMod
                     }
                     if (currentWeapon != null)
                         currentWeapon.UpdateWeapon(ref cannonModule);
+                }
+
+            }
+        }
+
+
+        public class ModuleHotpatch
+        {
+            public string ID { get; set; }
+            public float moduleWeight { get; set; }
+            public int requiredCrew { get; set; }
+            public int repairCrew { get; set; }
+            public float repairOptimalCrew { get; set; }
+            public float repairLimit { get; set; }
+            public List<ModifierHotPatch> modifiers { get; set; } = new List<ModifierHotPatch>();
+            public string title { get; set; }
+            public string description { get; set; }
+            public string effect { get; set; }
+            public int goldPrice { get; set; }
+            public EUpgradeCategory category { get; set; }
+            public string categoryString { get; set; }
+            public EModuleIndex repairModule { get; set; } = EModuleIndex.None;
+            public string repairModuleString { get; set; }
+            public EUpgradeSpecial speciality { get; set; }
+            public string specialityString { get; set; }
+            public EShipKindMask shipKinds { get; set; } = (EShipKindMask)3;
+            public string shipKindsString { get; set; }
+            public bool isTemporary { get; set; }
+
+            public ModuleHotpatch() { }
+            public ModuleHotpatch(UpgradeModule template)
+            {
+                this.ID = template.title.ToString();
+                this.moduleWeight = template.moduleWeight;
+                this.requiredCrew = template.requiredCrew;
+                this.repairCrew = template.repairCrew;
+                this.repairOptimalCrew = template.repairOptimalCrew;
+                this.repairLimit = template.repairLimit;
+                foreach (var mod in template.modifiers)
+                {
+                    this.modifiers.Add(new ModifierHotPatch(mod));
+                }
+                this.title = template.title;
+                this.description = template.description;
+                this.effect = template.effect;
+
+                this.goldPrice = template.GoldPrice;
+                this.category = template.category;
+                this.categoryString = template.category.ToString();
+                this.repairModule = template.repairModule;
+                this.repairModuleString = template.repairModule.ToString();
+                this.speciality = template.speciality;
+                this.specialityString = template.speciality.ToString();
+                this.shipKinds = template.shipKinds;
+                this.shipKindsString = template.shipKinds.ToString();
+                this.isTemporary = template.isTemporary;
+            }
+
+            public void Update(ref UpgradeModule template)
+            {
+                template.moduleWeight = this.moduleWeight;
+                template.requiredCrew = this.requiredCrew;
+                template.repairCrew = this.repairCrew;
+                template.repairOptimalCrew = this.repairOptimalCrew;
+                template.repairLimit = this.repairLimit;
+                template.modifiers.Clear();
+                foreach (var modifier in this.modifiers)
+                {
+                    template.modifiers.Add(modifier.Deserialize());
+                }
+
+                template.GoldPrice = this.goldPrice;
+                template.category = this.category;
+                template.repairModule = this.repairModule;
+                template.speciality = this.speciality;
+                template.shipKinds = this.shipKinds;
+                template.isTemporary = this.isTemporary;
+            }
+
+            public class ModifierHotPatch
+            {
+                public EModifier enumID { get; set; }
+                public string enumIDString { get; set; }
+                public float floatValue { get; set; }
+                public string stringValue { get; set; }
+                public AnimationCurve curveValue { get; set; }
+                public EModifierConditionDependency dependency { get; set; }
+                public string dependencyString { get; set; }
+                public EModifierSign sign { get; set; }
+                public string signString { get; set; }
+
+                public ModifierHotPatch() { }
+                public ModifierHotPatch(Modifier m)
+                {
+                    this.enumID = m.enumID;
+                    this.floatValue = m.floatValue;
+                    this.stringValue = m.stringValue;
+                    this.curveValue = m.curveValue;
+                    this.dependency = m.dependency;
+                    this.sign = m.sign;
+                    this.enumIDString = m.enumID.ToString();
+                    this.dependencyString = m.dependency.ToString();
+                    this.signString = m.sign.ToString();
+                }
+
+                public Modifier Deserialize()
+                {
+                    return new Modifier(this.enumID)
+                    {
+                        curveValue = this.curveValue,
+                        dependency = this.dependency,
+                        floatValue = this.floatValue,
+                        sign = this.sign,
+                        stringValue = this.stringValue
+                    };
+                }
+            }
+
+        }
+
+        [HarmonyPatch(typeof(Game))]
+        [HarmonyPatch("Load")]
+        private class CampaignController_Patch
+        {
+            private static bool Initialized = true;
+            private static void Postfix(Game __result)
+            {
+                string ConfigFile = @"Mods/EquipmentMod/ShipModules.txt";
+                if (!File.Exists(ConfigFile))
+                {
+                    File.CreateText(ConfigFile).Close();
+                    Initialized = false;
+                }
+                if (!Initialized)
+                {
+                    var upgradeModules = __result.campaign.campaignControllerData.campSettings.shopSettings.upgradePool.upgrades;
+                    if (upgradeModules == null)
+                        return;
+                    var slimModules = new List<ModuleHotpatch>();
+                    foreach (var mod in upgradeModules)
+                    {
+                        slimModules.Add(new ModuleHotpatch(mod));
+                    }
+                    File.WriteAllText(ConfigFile, JsonConvert.SerializeObject(slimModules, Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore, MaxDepth = 2 }));
+                }
+                else
+                {
+                    var currentModules = JsonConvert.DeserializeObject<List<ModuleHotpatch>>(File.ReadAllText(ConfigFile));
+                    var upgradeModules = __result.campaign.campaignControllerData.campSettings.shopSettings.upgradePool.upgrades;
+                    foreach (var module in currentModules)
+                    {
+                        var matchingModule = upgradeModules.Find(x => x.title == module.ID);
+                        module.Update(ref matchingModule);
+                        matchingModule.OnAfterDeserialize();
+                    }
                 }
 
             }
