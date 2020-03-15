@@ -428,9 +428,15 @@ namespace EquipmentMod
                     var upgradeModules = __result.campaign.campaignControllerData.campSettings.shopSettings.upgradePool.upgrades;
                     foreach (var module in currentModules)
                     {
-                        var matchingModule = upgradeModules.Find(x => x.title == module.ID);
-                        module.Update(ref matchingModule);
-                        matchingModule.OnAfterDeserialize();
+                        try
+                        {
+                            var matchingModule = upgradeModules.Find(x => x.title == module.ID);
+                            module.Update(ref matchingModule);
+                            matchingModule.OnAfterDeserialize();
+                        }
+                        catch (Exception)
+                        {
+                        }
                     }
                 }
 
