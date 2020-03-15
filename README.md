@@ -41,6 +41,7 @@ Equipment Mod:
 Changelog:
 v1.2:
 - Fix crash when new guns are added to your game
+
 v1.3:
 - Expose more properties for rifles/artillery
 - Add ShipModule Functionality.
