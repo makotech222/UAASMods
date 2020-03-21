@@ -345,7 +345,6 @@ namespace EquipmentMod
     public class ModuleHotpatch
     {
         public string ID { get; set; }
-        public float moduleWeight { get; set; }
         public int requiredCrew { get; set; }
         public int repairCrew { get; set; }
         public float repairOptimalCrew { get; set; }
@@ -372,7 +371,6 @@ namespace EquipmentMod
         public ModuleHotpatch(UpgradeModule template)
         {
             this.ID = template.title.ToString();
-            this.moduleWeight = template.moduleWeight;
             this.requiredCrew = template.requiredCrew;
             this.repairCrew = template.repairCrew;
             this.repairOptimalCrew = template.repairOptimalCrew;
@@ -399,7 +397,6 @@ namespace EquipmentMod
 
         public void Update(ref UpgradeModule template)
         {
-            template.moduleWeight = this.moduleWeight;
             template.requiredCrew = this.requiredCrew;
             template.repairCrew = this.repairCrew;
             template.repairOptimalCrew = this.repairOptimalCrew;
