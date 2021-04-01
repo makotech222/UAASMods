@@ -16,14 +16,14 @@ namespace UAAS
 		[Space(5f), Draw("Minimum Cash (Updates when changed)", Precision = 0, Min = 0.0)]
 		public int MinimumCash = 0;
 		
-		[Space(5f), Draw("Cash mult revard from mission", Precision = 1, Min = 1.0)]
-		public int CashRevMult = 1;
+		[Space(5f), Draw("Cash reward multiplier from mission", Precision = 1, Min = 1.0)]
+		public int CashRewMult = 1;
 		
-		[Space(5f), Draw("Reputation mult revard from mission", Precision = 1, Min = 1.0)]
-		public int ReputationRevMult = 1;
+		[Space(5f), Draw("Reputation reward multiplier from mission", Precision = 1, Min = 1.0)]
+		public int ReputationRewMult = 1;
 		
-		[Space(5f), Draw("Career Points mult revard from mission", Precision = 1, Min = 1.0)]
-		public int CareerPointsRevMult = 1;
+		[Space(5f), Draw("Career Points reward multiplier from mission", Precision = 1, Min = 1.0)]
+		public int CareerPointsRewMult = 1;
 
 		[Space(5f), Draw("Inf. Rifle/Cannon Stock in Shop (Buy Once to update)")]
 		public bool InfRifleStock = false;

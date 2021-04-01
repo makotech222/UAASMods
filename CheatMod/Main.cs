@@ -100,9 +100,9 @@ namespace UAAS
 				{
 					RewardSettings.BattleReward battleReward = rewards[i];
 					if (battleReward.item.Type == ERewardType.Gold || battleReward.item.Type == ERewardType.Reputation || battleReward.item.Type == ERewardType.CareerPoints) {
-						if (battleReward.item.Type == ERewardType.Gold) battleReward.count *= (Main._settings.CashRevMult-1);
-						if (battleReward.item.Type == ERewardType.Reputation) battleReward.count *= (Main._settings.ReputationRevMult-1);
-						if (battleReward.item.Type == ERewardType.Medal) battleReward.count *= (Main._settings.CareerPointsRevMult-1);
+						if (battleReward.item.Type == ERewardType.Gold) battleReward.count *= (Main._settings.CashRewMult-1);
+						if (battleReward.item.Type == ERewardType.Reputation) battleReward.count *= (Main._settings.ReputationRewMult-1);
+						if (battleReward.item.Type == ERewardType.Medal) battleReward.count *= (Main._settings.CareerPointsRewMult-1);
 						
 						battleReward.Transfer(false, battle.NavalDifficulty);
 					}
@@ -117,9 +117,9 @@ namespace UAAS
 						{
 							RewardSettings.BattleReward battleReward2 = rewards[j];
 							if (battleReward2.item.Type == ERewardType.Gold || battleReward2.item.Type == ERewardType.Reputation || battleReward2.item.Type == ERewardType.Medal) {
-								if (battleReward2.item.Type == ERewardType.Gold) battleReward2.count *= (Main._settings.CashRevMult-1);
-								if (battleReward2.item.Type == ERewardType.Reputation) battleReward2.count *= (Main._settings.ReputationRevMult-1);
-								if (battleReward2.item.Type == ERewardType.Medal) battleReward2.count *= (Main._settings.CareerPointsRevMult-1);
+								if (battleReward2.item.Type == ERewardType.Gold) battleReward2.count *= (Main._settings.CashRewMult-1);
+								if (battleReward2.item.Type == ERewardType.Reputation) battleReward2.count *= (Main._settings.ReputationRewMult-1);
+								if (battleReward2.item.Type == ERewardType.Medal) battleReward2.count *= (Main._settings.CareerPointsRewMult-1);
 								
 								battleReward2.Transfer(false, EDifficulty.None);
 							}
