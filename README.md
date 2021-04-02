@@ -28,6 +28,11 @@ CheatMod:
 - Max Supply (Land)
 - Modify Naval Unit stats (Experimental)
 - Modify Land Unit stats (Experimental)
+- Cash reward multiplier
+- Reputation reward multiplier
+- Career Points reward multiplier
+- Fast reload land / sea units
+
 
 Changelog:
 v1.1:
@@ -63,6 +68,7 @@ v1.5:
 
 v1.6:
 - Update to latest version of game.
+
 
 Instructions:
 Install the Equipment mod using UnityModManager, start the game and load up a save. Loading a game will cause the mod to export the Rifles.txt and Cannons.txt files to the Mod's install folder inside the game directory. Exit the game, and open the two text files. You can edit the stats
