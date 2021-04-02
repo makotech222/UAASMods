@@ -33,6 +33,15 @@ Changelog:
 v1.1:
 - Add experimental cheats for editing stats.
 
+v1.2:
+Added new features:
+- Cash reward multiplier
+- Reputation reward multiplier
+- Career Points reward multiplier
+- Fast reload land / sea units
+
+***********************************************************
+
 Equipment Mod:
 - Edit stats of all rifles
 - Edit stats of all ship cannons
@@ -50,6 +59,9 @@ v1.4:
 - Improve Entry point + Refactor. Json files will now contains all elements, rather than just what is in your campaign at the time.
 
 v1.5:
+- Update to latest version of game.
+
+v1.6:
 - Update to latest version of game.
 
 Instructions:
