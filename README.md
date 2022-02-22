@@ -1,6 +1,6 @@
 # UAAS Mods
 
-UnityModManager 0.21.4 supported; Add the following to the UnityModManagerConfig.xml:
+UnityModManager 0.21.4 supported; Add the following to the UnityModManagerConfig.xml (not required if you have the latest version of Unity Mod Manager):
 
 ```
 	<GameInfo Name="Ultimate Admiral Age of Sea">
@@ -13,8 +13,17 @@ UnityModManager 0.21.4 supported; Add the following to the UnityModManagerConfig
 	</GameInfo>
 ```
 
-Download and Install the CheatMod.zip file from the git repo. Use the Unity Mod Manager UI to change settings
+***********************************************************
 
+Mod installation instructions:
+1. Open Unity Mod Manager and select Ultimate Admiral Age of Sea from the Install tab.
+2. Then change the installation method to DoorstopProxy and click Install.
+3. Download the CheatMod.zip file from git rep, then in the "Mods" tab, drag the archive into the program window.
+4. Try it.
+
+Use the Unity Mod Manager UI to change mod settings.
+
+***********************************************************
 
 CheatMod:
 - Speed Button Multiplier (Changes speed multiplier value by this multiplier, making game go faster) (* A bit janky with the way the UI controls works. Just visual bug though.)
@@ -32,6 +41,7 @@ CheatMod:
 - Reputation reward multiplier
 - Career Points reward multiplier
 - Fast reload land / sea units
+- Damage multipliers land / sea units
 
 
 Changelog:
@@ -44,6 +54,13 @@ Added new features:
 - Reputation reward multiplier
 - Career Points reward multiplier
 - Fast reload land / sea units
+
+v1.3:
+Added new features:
+- Damage multipliers for different parts of the ship
+- Ground damage multipliers
+- Reload speed multipliers
+- Some of the multipliers are now configurable for enemies as well
 
 ***********************************************************
 
@@ -69,6 +86,7 @@ v1.5:
 v1.6:
 - Update to latest version of game.
 
+***********************************************************
 
 Instructions:
 Install the Equipment mod using UnityModManager, start the game and load up a save. Loading a game will cause the mod to export the Rifles.txt and Cannons.txt files to the Mod's install folder inside the game directory. Exit the game, and open the two text files. You can edit the stats
