@@ -13,6 +13,8 @@ UnityModManager 0.21.4 supported; Add the following to the UnityModManagerConfig
 	</GameInfo>
 ```
 
+***********************************************************
+
 Mod installation instructions:
 1. Open Unity Mod Manager and select Ultimate Admiral Age of Sea from the Install tab.
 2. Then change the installation method to DoorstopProxy and click Install.
@@ -21,7 +23,7 @@ Mod installation instructions:
 
 Use the Unity Mod Manager UI to change mod settings.
 
-
+***********************************************************
 
 CheatMod:
 - Speed Button Multiplier (Changes speed multiplier value by this multiplier, making game go faster) (* A bit janky with the way the UI controls works. Just visual bug though.)
@@ -84,6 +86,7 @@ v1.5:
 v1.6:
 - Update to latest version of game.
 
+***********************************************************
 
 Instructions:
 Install the Equipment mod using UnityModManager, start the game and load up a save. Loading a game will cause the mod to export the Rifles.txt and Cannons.txt files to the Mod's install folder inside the game directory. Exit the game, and open the two text files. You can edit the stats
