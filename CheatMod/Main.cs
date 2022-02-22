@@ -21,11 +21,10 @@ namespace UAAS
 				for (int i = __instance.speedButtons.Length - 1; i > 0; i--)
 				{
 					BattleRightBottomPanel.ButtonRec buttonRec = __instance.speedButtons[i];
-					bool flag = buttonRec.selection == selection;
-					if (flag)
+					if (buttonRec.selection == selection)
 					{
 						BattleLogic.instance.pauseSound = true;
-						BattleLogic.instance.GameSpeed = buttonRec.speed * 5f * (float)Main._settings.SpeedMultiplier;
+						BattleLogic.instance.GameSpeed = buttonRec.speed * 5f * Main._settings.SpeedMultiplier;
 						break;
 					}
 				}
@@ -38,32 +37,11 @@ namespace UAAS
 			private static void Prefix(PayElement __instance)
 			{
 				PlayerController instance = PlayerController.instance;
-				bool flag = Main._settings.MinimumReputation > 0;
-				if (flag)
+				if (Main._settings.MinimumReputation > 0)
 				{
 					instance.Reputation = Math.Max(Main._settings.MinimumReputation, instance.Reputation);
 				}
-				bool flag2 = Main._settings.MinimumCash > 0;
-				if (flag2)
-				{
-					instance.Gold = Math.Max(Main._settings.MinimumCash, instance.Gold);
-				}
-			}
-		}
-
-		[HarmonyPatch(typeof(PaySection)), HarmonyPatch("Pay")]
-		private class PaySectionPay
-		{
-			private static void Prefix(PaySection __instance)
-			{
-				PlayerController instance = PlayerController.instance;
-				bool flag = Main._settings.MinimumReputation > 0;
-				if (flag)
-				{
-					instance.Reputation = Math.Max(Main._settings.MinimumReputation, instance.Reputation);
-				}
-				bool flag2 = Main._settings.MinimumCash > 0;
-				if (flag2)
+				if (Main._settings.MinimumCash > 0)
 				{
 					instance.Gold = Math.Max(Main._settings.MinimumCash, instance.Gold);
 				}
@@ -100,30 +78,11 @@ namespace UAAS
 				{
 					RewardSettings.BattleReward battleReward = rewards[i];
 					if (battleReward.item.Type == ERewardType.Gold || battleReward.item.Type == ERewardType.Reputation || battleReward.item.Type == ERewardType.CareerPoints) {
-						if (battleReward.item.Type == ERewardType.Gold) battleReward.count *= (Main._settings.CashRewMult-1);
-						if (battleReward.item.Type == ERewardType.Reputation) battleReward.count *= (Main._settings.ReputationRewMult-1);
-						if (battleReward.item.Type == ERewardType.Medal) battleReward.count *= (Main._settings.CareerPointsRewMult-1);
+						if (battleReward.item.Type == ERewardType.Gold) battleReward.count *= Main._settings.CashRewMult-1;
+						if (battleReward.item.Type == ERewardType.Reputation) battleReward.count *= Main._settings.ReputationRewMult-1;
+						if (battleReward.item.Type == ERewardType.Medal) battleReward.count *= Main._settings.CareerPointsRewMult-1;
 						
 						battleReward.Transfer(false, battle.NavalDifficulty);
-					}
-				}
-				if (battle.HasBonusReward)
-				{
-					rewardSettings = battle.battleSettings.bonusRewards;
-					if (rewardSettings != null)
-					{
-						rewards = rewardSettings.rewards;
-						for (int j = 0; j < rewards.Length; j++)
-						{
-							RewardSettings.BattleReward battleReward2 = rewards[j];
-							if (battleReward2.item.Type == ERewardType.Gold || battleReward2.item.Type == ERewardType.Reputation || battleReward2.item.Type == ERewardType.Medal) {
-								if (battleReward2.item.Type == ERewardType.Gold) battleReward2.count *= (Main._settings.CashRewMult-1);
-								if (battleReward2.item.Type == ERewardType.Reputation) battleReward2.count *= (Main._settings.ReputationRewMult-1);
-								if (battleReward2.item.Type == ERewardType.Medal) battleReward2.count *= (Main._settings.CareerPointsRewMult-1);
-								
-								battleReward2.Transfer(false, EDifficulty.None);
-							}
-						}
 					}
 				}
 			}
@@ -134,15 +93,12 @@ namespace UAAS
 		{
 			private static void Prefix(AdmiraltyManager __instance)
 			{
-				bool flag = Main._settings.InfRifleStock || Main._settings.InfRifleStockArmory;
-				if (flag)
+				if (Main._settings.InfRifleStock || Main._settings.InfRifleStockArmory)
 				{
 					EPickerContent contentType = __instance.SelectedItem.ContentType;
-					bool flag2 = contentType != EPickerContent.Cannon;
-					if (flag2)
+					if (contentType != EPickerContent.Cannon)
 					{
-						bool flag3 = contentType == EPickerContent.Rifle;
-						if (flag3)
+						if (contentType == EPickerContent.Rifle)
 						{
 							StoreRecord storeRecord = (__instance.SelectedItem.ContentItem as RifleItem).StoreRecord;
 							bool infRifleStock = Main._settings.InfRifleStock;
@@ -181,8 +137,7 @@ namespace UAAS
 		{
 			private static void Prefix(ShipModel.Crew __instance, ref float change)
 			{
-				bool flag = Main._settings.MaxNavalMorale && __instance.ship.side == RuntimeVars.playerSide;
-				if (flag)
+				if (Main._settings.MaxNavalMorale && __instance.ship.side == RuntimeVars.playerSide)
 				{
 					change = 1f;
 				}
@@ -194,8 +149,7 @@ namespace UAAS
 		{
 			private static void Prefix(ShipModel.Crew __instance, ref float dt)
 			{
-				bool flag = Main._settings.MaxNavalMorale && __instance.ship.side == RuntimeVars.playerSide;
-				if (flag)
+				if (Main._settings.MaxNavalMorale && __instance.ship.side == RuntimeVars.playerSide)
 				{
 					dt = 1000f;
 				}
@@ -207,8 +161,7 @@ namespace UAAS
 		{
 			private static void Prefix(ShipModel.Crew __instance, ref float drain)
 			{
-				bool flag = Main._settings.MaxNavalCondition && __instance.ship.side == RuntimeVars.playerSide;
-				if (flag)
+				if (Main._settings.MaxNavalCondition && __instance.ship.side == RuntimeVars.playerSide)
 				{
 					drain = -1000f;
 				}
@@ -220,13 +173,11 @@ namespace UAAS
 		{
 			private static void Prefix(ShipModel __instance)
 			{
-				bool flag = Main._settings.MaxNavalCondition && __instance.side == RuntimeVars.playerSide;
-				if (flag)
+				if (Main._settings.MaxNavalCondition && __instance.side == RuntimeVars.playerSide)
 				{
 					__instance.crew.Stamina = 1f;
 				}
-				bool flag2 = Main._settings.MaxNavalMorale && __instance.side == RuntimeVars.playerSide;
-				if (flag2)
+				if (Main._settings.MaxNavalMorale && __instance.side == RuntimeVars.playerSide)
 				{
 					__instance.crew.Morale = 1f;
 				}
@@ -234,14 +185,12 @@ namespace UAAS
 
 			private static void Postfix(ShipModel __instance)
 			{
-				bool flag = Main._settings.MaxNavalCondition && __instance.side == RuntimeVars.playerSide;
-				if (flag)
+				if (Main._settings.MaxNavalCondition && __instance.side == RuntimeVars.playerSide)
 				{
 					__instance.actualAttributes.endurance = 100f;
 					__instance.currentAttributes.endurance = 100f;
 				}
-				bool flag2 = Main._settings.MaxNavalMorale && __instance.side == RuntimeVars.playerSide;
-				if (flag2)
+				if (Main._settings.MaxNavalMorale && __instance.side == RuntimeVars.playerSide)
 				{
 					__instance.actualAttributes.willpower = 100f;
 					__instance.currentAttributes.willpower = 100f;
@@ -254,14 +203,12 @@ namespace UAAS
 		{
 			private static void Postfix(NavalController __instance, ShipModel __result)
 			{
-				bool flag = __result.side == RuntimeVars.playerSide;
-				if (flag)
+				if (__result.side == RuntimeVars.playerSide)
 				{
 					for (int i = 0; i < 6; i++)
 					{
 						NavalOfficer crewOfficer = __result.crew.GetCrewOfficer((ENavalTask)i);
-						bool flag2 = crewOfficer == null;
-						if (flag2)
+						if (crewOfficer == null)
 						{
 							break;
 						}
@@ -280,11 +227,13 @@ namespace UAAS
 		{
 			private static void Prefix(ShipViewController __instance, ref ShipModel ___model, ref ShipViewConfig ___viewConfig)
 			{
-				bool flag = ___model.side == RuntimeVars.playerSide;
-				if (flag)
+				if (___model.side == RuntimeVars.playerSide)
 				{
-					___viewConfig.forwardForceModifier = Main._settings.NavalSpeedModifier;
-					___viewConfig.backwardForceModifier = Main._settings.NavalSpeedModifier;
+					___viewConfig.forwardForceModifier = Main._settings.AllyNavalSpeedModifier;
+					___viewConfig.backwardForceModifier = Main._settings.AllyNavalSpeedModifier;
+				} else {
+					___viewConfig.forwardForceModifier = Main._settings.EnemyNavalSpeedModifier;
+					___viewConfig.backwardForceModifier = Main._settings.EnemyNavalSpeedModifier;
 				}
 			}
 		}
@@ -292,12 +241,83 @@ namespace UAAS
 		[HarmonyPatch(typeof(ShipViewController.Deck)), HarmonyPatch("EndVolley")]
 		private class EndVolley
 		{
-			private static void Postfix(ShipViewController.Deck __instance, ref ShipModel ___model)
+			private static void Postfix(ShipViewController.Deck __instance, ref ShipModel ___model, ref float __state)
 			{
-				bool flag = __instance.model.board.Ship.side == RuntimeVars.playerSide;
-				if (flag && Main._settings.NavalFastReload)
+				if (__instance.model.board.Ship.side == RuntimeVars.playerSide && Main._settings.NavalFastReload)
 				{
 					__instance.Timer = 0f;
+				}
+				if (!Main._settings.NavalFastReload) {
+					if (__instance.model.board.Ship.side == RuntimeVars.playerSide) {
+						__instance.Timer *= Main._settings.AllyNavalReloadTimeMult;
+					} else {
+						__instance.Timer *= Main._settings.EnemyNavalReloadTimeMult;
+					}
+				}
+			}
+		}
+
+		[HarmonyPatch (typeof (ShipViewController.ModuleSystem)), HarmonyPatch ("DamageCrew")]
+		private class DamageCrew {
+			private static void Prefix (ref float damage, ref ShipViewController sender, ref ShipModel ___model) {
+				if (sender != null) {
+					if (___model.side != RuntimeVars.playerSide) {
+						damage *= Main._settings.AllyCrewDamageModifier;
+					} else {
+						damage *= Main._settings.EnemyCrewDamageModifier;
+					}
+				}
+			}
+		}
+
+		[HarmonyPatch (typeof (ShipViewController.ModuleSystem)), HarmonyPatch ("DamageSail")]
+		private class DamageSail {
+			private static void Prefix (ref float damage, ref ShipViewController sender, ref ShipModel ___model) {
+				if (sender != null) {
+					if (___model.side != RuntimeVars.playerSide) {
+						damage *= Main._settings.AllySailDamageModifier;
+					} else {
+						damage *= Main._settings.EnemySailDamageModifier;
+					}
+				}
+			}
+		}
+
+		[HarmonyPatch (typeof (ShipViewController.ModuleSystem)), HarmonyPatch ("DamageArmor")]
+		private class DamageArmor {
+			private static void Prefix (ref float damage, ref ShipViewController sender, ref ShipModel ___model) {
+				if (sender != null) {
+					if (___model.side != RuntimeVars.playerSide) {
+						damage *= Main._settings.AllyArmorDamageModifier;
+					} else {
+						damage *= Main._settings.EnemyArmorDamageModifier;
+					}
+				}
+			}
+		}
+
+		[HarmonyPatch (typeof (ShipViewController.ModuleSystem)), HarmonyPatch ("DamageStructure")]
+		private class DamageStructure {
+			private static void Prefix (ref float damage, ref ShipViewController sender, ref ShipModel ___model) {
+				if (sender != null) {
+					if (___model.side != RuntimeVars.playerSide) {
+						damage *= Main._settings.AllyStructureDamageModifier;
+					} else {
+						damage *= Main._settings.EnemyStructureDamageModifier;
+					}
+				}
+			}
+		}
+
+		[HarmonyPatch (typeof (ShipViewController.ModuleSystem)), HarmonyPatch ("DamageModule")]
+		private class DamageModule {
+			private static void Prefix (ref EModuleIndex moduleIndex, ref float damage, ref ShipModel ___model) {
+				if (damage > 0) {
+					if (___model.side != RuntimeVars.playerSide) {
+						damage *= Main._settings.AllyModuleDamageModifier;
+					} else {
+						damage *= Main._settings.EnemyModuleDamageModifier;
+					}
 				}
 			}
 		}
@@ -307,10 +327,14 @@ namespace UAAS
 		{
 			private static void Prefix(UnitModel __instance)
 			{
-				bool flag = Main._settings.NoDamage && __instance.side == RuntimeVars.playerSide;
-				if (flag)
+				if (__instance.side == RuntimeVars.playerSide)
 				{
-					__instance.currentFrameData.damage = 0f;
+					if (Main._settings.NoDamage)
+						__instance.currentFrameData.damage = 0f;
+					else
+						__instance.currentFrameData.damage *= Main._settings.EnemyDamageMultiplier;
+				} else {
+					__instance.currentFrameData.damage *= Main._settings.AllyDamageMultiplier;
 				}
 			}
 		}
@@ -318,15 +342,23 @@ namespace UAAS
 		[HarmonyPatch(typeof(UnitModel)), HarmonyPatch("ShootParamsUpdate")]
 		private class ShootParamsUpdate
 		{
+			private static void Prefix (UnitModel __instance, ref float dReloadProgress) {
+				if (!Main._settings.LandFastReload) {
+					if (__instance.side == RuntimeVars.playerSide) {
+						dReloadProgress *= Main._settings.AllyLandReloadTimeMult;
+					} else {
+						dReloadProgress *= Main._settings.EnemyLandReloadTimeMult;
+					}
+				}
+			}
+
 			private static void Postfix(UnitModel __instance)
 			{
-				bool flag = Main._settings.MaxSupply && __instance.side == RuntimeVars.playerSide;
-				if (flag)
+				if (Main._settings.MaxSupply && __instance.side == RuntimeVars.playerSide)
 				{
 					__instance.ammunitionCurrentCost = __instance.ammunitionTotalCost;
 				}
-				bool flag2 = Main._settings.LandFastReload && __instance.side == RuntimeVars.playerSide;
-				if (flag2)
+				if (Main._settings.LandFastReload && __instance.side == RuntimeVars.playerSide)
 				{
 					__instance.reloadProgress = 1f;
 				}
@@ -338,8 +370,7 @@ namespace UAAS
 		{
 			private static void Postfix(Morale __instance, ref UnitModel ___data)
 			{
-				bool flag = Main._settings.MaxMorale && ___data.side == RuntimeVars.playerSide;
-				if (flag)
+				if (Main._settings.MaxMorale && ___data.side == RuntimeVars.playerSide)
 				{
 					__instance.morale = 1f;
 					___data.morale = 1f;
@@ -352,8 +383,7 @@ namespace UAAS
 		{
 			private static void Prefix(Fatigue __instance, ref UnitModel ___data, ref float dt)
 			{
-				bool flag = Main._settings.MaxCondition && ___data.side == RuntimeVars.playerSide;
-				if (flag)
+				if (Main._settings.MaxCondition && ___data.side == RuntimeVars.playerSide)
 				{
 					dt = 10000f;
 				}
@@ -361,8 +391,7 @@ namespace UAAS
 
 			private static void Postfix(Fatigue __instance, ref UnitModel ___data)
 			{
-				bool flag = Main._settings.MaxCondition && ___data.side == RuntimeVars.playerSide;
-				if (flag)
+				if (Main._settings.MaxCondition && ___data.side == RuntimeVars.playerSide)
 				{
 					___data.condition = 1f;
 				}
@@ -374,8 +403,7 @@ namespace UAAS
 		{
 			private static void Postfix(UnitManager __instance, ref UnitModel __result)
 			{
-				bool flag = __result.side == RuntimeVars.playerSide;
-				if (flag)
+				if (__result.side == RuntimeVars.playerSide)
 				{
 					__result.maxSpeed *= Main._settings.SpeedModifier;
 					__result.entity.spottingRange *= Main._settings.SpottingModifier;
@@ -396,8 +424,7 @@ namespace UAAS
 					__result.startAttributes = array[0];
 					__result.actualAttributes = array[1];
 					__result.currentAttributes = array[2];
-					bool isValid = __result.isValid;
-					if (isValid)
+					if (__result.isValid)
 					{
 						BattlePanel.Instance.UpdateContent(true);
 					}
